@@ -9,5 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: mayur-rawte/github-angular-actions@latest
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '8.x'
+    - run: npm install -g @angular/cli
     - run: ng test
