@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -7,9 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
-  constructor() { }
+  users: any[];
+  userSubscription: Subscription;
+
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+    this.userSubscription = this.userService.usersSubject.subscribe(
+      (users: any[]) => {
+        this.users = users;
+      }
+    );
+    this.userService.emitUserSubject();
+  }
+
+  onSave() {
+    this.userService.saveUser();
+  }
+
+  onFetch() {
+    this.userService.getUser();
   }
 
 }
