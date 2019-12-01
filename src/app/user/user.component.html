@@ -1,11 +1,14 @@
 <h2>Mes utilisateurs</h2>
+
 <ul class="list-group">
-      <li *ngFor="let user of users">
-            <p>Login : {{ user.login }} / Email : {{ user.email }}</p>
+      <li class="list-group-item" *ngFor="let user of users">
+            <h3>{{ user.login }}</h3>
+            <p>{{ user.email }}</p>
       </li>
+      <a routerLink="/new-user">Nouvel utilisateur</a>
 </ul>
 
 <button class="btn btn-primary"
-      (click)="onSave()">Enregistrer l'utilisateur</button>
+      (click)="onSave()">Enregistrer les utilisateurs</button>
 <button class="btn btn-primary"
-      (click)="onFetch()">Récupérer l'utilisateur</button>
+      (click)="onFetch()">Récupérer les utilisateurs</button>

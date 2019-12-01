@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-user',
@@ -9,26 +10,30 @@ import { Subscription } from 'rxjs';
 })
 export class UserComponent implements OnInit {
 
-  users: any[];
+  users: User[] = [];
   userSubscription: Subscription;
 
   constructor(private userService: UserService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.userSubscription = this.userService.usersSubject.subscribe(
-      (users: any[]) => {
+      (users: User[]) => {
         this.users = users;
       }
     );
-    this.userService.emitUserSubject();
+    this.userService.getUsers();
   }
 
   onSave() {
-    this.userService.saveUser();
+    this.userService.saveUsers();
   }
 
   onFetch() {
-    this.userService.getUser();
+    this.userService.getUsers();
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
 }

@@ -1,34 +1,32 @@
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class UserService {
 
-  usersSubject = new Subject<any[]>();
+  usersSubject = new Subject<User[]>();
   
-  private users = [
-    {
-      "id": 20,
-      "login": "FromAngular",
-      "password": "strongPassword",
-      "email": "test.test@test.fr"
-    }
-  ];
+  private users: User[] = [];
 
   constructor(private httpClient: HttpClient) { }
 
-  getSingleUser() {
-    return this.users[0];
-  }
-
-  emitUserSubject() {
+  emitUsersSubject() {
     this.usersSubject.next(this.users);
   }
 
-  saveUser() {
+  addUser(user: User) {
+    user.id = this.users[(this.users.length - 1)].id + 1;
+    this.users.push(user);
+    this.emitUsersSubject();
+
+    this.saveUser(user);
+  }
+
+  saveUser(user: User) {
     this.httpClient
-      .post('http://localhost:3000/api/v1/users', this.users[0])
+      .post('http://localhost:3000/api/v1/users', user)
       .subscribe(
         (response) => {
           console.log(response);
@@ -40,19 +38,25 @@ export class UserService {
     );
   }
 
-  getUser() {
+  saveUsers() {
+    for(let user of this.users) {
+      this.saveUser(user);
+    }
+  }
+
+  getUsers() {
     this.httpClient
-      .get<any>('http://localhost:3000/api/v1/users/1')
+      .get<User[]>('http://localhost:3000/api/v1/users')
       .subscribe(
         (response) => {
           console.log(response);
-          this.users[0] = response;
+          this.users = response;
         },
         (error) => {
           console.log('Erreur ! : ' + error);
         }
     );
-    this.emitUserSubject();
+    this.emitUsersSubject();
   }
 
 }
