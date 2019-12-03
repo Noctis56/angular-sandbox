@@ -31,11 +31,12 @@ export class NewUserComponent implements OnInit {
 
   onSubmitForm() {
     const formValue = this.userForm.value;
-    const newUser = new User(0,
-      formValue['login'],
-      formValue['password'],
-      formValue['email']
-    );
+    const newUser: User = {
+      id: 0,
+      login: formValue['login'],
+      password: formValue['password'],
+      email: formValue['email']
+    };
     this.userService.addUser(newUser);
     this.router.navigate(['/users']);
   }
