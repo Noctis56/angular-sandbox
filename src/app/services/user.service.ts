@@ -8,9 +8,11 @@ export class UserService {
 
   usersSubject = new Subject<User[]>();
   
-  private users: User[] = [];
+  private users: User[];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { 
+    this.getUsers();
+  }
 
   emitUsersSubject() {
     this.usersSubject.next(this.users);

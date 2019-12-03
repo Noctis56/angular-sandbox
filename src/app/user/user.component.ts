@@ -10,7 +10,7 @@ import { User } from '../models/user.model';
 })
 export class UserComponent implements OnInit {
 
-  users: User[] = [];
+  users: User[];
   userSubscription: Subscription;
 
   constructor(private userService: UserService) { }
@@ -21,7 +21,7 @@ export class UserComponent implements OnInit {
         this.users = users;
       }
     );
-    this.userService.getUsers();
+    this.userService.emitUsersSubject();
   }
 
   onSave() {
